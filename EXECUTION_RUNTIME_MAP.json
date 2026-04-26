@@ -1,0 +1,49 @@
+{
+  "name": "project-execution-topology-base",
+  "version": "0.1.0",
+  "description": "Standard execution topology contract for SBOfficial projects.",
+  "topology": {
+    "portable_workspace": {
+      "role": [
+        "portable reference",
+        "governance carrier",
+        "factory-compatible project copy"
+      ],
+      "active_for_implementation": false
+    },
+    "remote_repository": {
+      "role": [
+        "official synchronization point",
+        "history backbone",
+        "backup"
+      ],
+      "active_for_implementation": false
+    },
+    "local_execution_clone": {
+      "role": [
+        "active implementation copy",
+        "dependency installation location",
+        "typecheck and test location",
+        "runtime execution location"
+      ],
+      "active_for_implementation": true
+    }
+  },
+  "sync_policy": {
+    "primary_mechanism": "git",
+    "expected_flow": [
+      "portable copy is versioned",
+      "remote repository becomes official origin",
+      "execution clone pulls from remote",
+      "implementation happens in execution clone",
+      "changes are committed and pushed",
+      "portable copy may pull updates when needed"
+    ]
+  },
+  "forbidden": [
+    "simultaneous uncontrolled editing in portable copy and execution clone",
+    "heavy dependency installation directly on weak portable media when an execution clone exists",
+    "hidden runtime topology"
+  ],
+  "status": "active"
+}

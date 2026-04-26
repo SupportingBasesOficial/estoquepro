@@ -6,8 +6,35 @@ Write-Host ""
 
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
 $ProjectRoot = (Resolve-Path $ProjectRoot).Path
-$ProjectNodeModules = Join-Path $ProjectRoot "node_modules"
+
+$gitCmd = Get-Command git -ErrorAction SilentlyContinue
+if (-not $gitCmd) {
+    throw "git não encontrado na máquina atual."
+}
+
+$RepoRoot = git -C $ProjectRoot rev-parse --show-toplevel 2>$null
+if (-not $RepoRoot) {
+    throw "O projeto não está dentro de um repositório Git."
+}
+$RepoRoot = $RepoRoot.Trim()
+
+$RepoName = Split-Path $RepoRoot -Leaf
+
+$ProjectRootUri = [System.Uri](($ProjectRoot.TrimEnd('\') + '\'))
+$RepoRootUri = [System.Uri](($RepoRoot.TrimEnd('\') + '\'))
+$RelativeSurfacePath = $RepoRootUri.MakeRelativeUri($ProjectRootUri).ToString()
+$RelativeSurfacePath = [System.Uri]::UnescapeDataString($RelativeSurfacePath).Replace('/', '\').TrimEnd('\')
+
+if ([string]::IsNullOrWhiteSpace($RelativeSurfacePath)) {
+    $SurfaceId = "root"
+} else {
+    $SurfaceId = ($RelativeSurfacePath -replace '[\\/:*?"<>| ]', '--')
+}
+
+$RuntimeIdentity = "$RepoName--$SurfaceId"
+
 $PackageJson = Join-Path $ProjectRoot "package.json"
+$ProjectNodeModules = Join-Path $ProjectRoot "node_modules"
 
 if (-not (Test-Path -LiteralPath $PackageJson)) {
     throw "package.json não encontrado em $ProjectRoot"
@@ -21,6 +48,13 @@ $npmCmd = Get-Command npm -ErrorAction SilentlyContinue
 if (-not $npmCmd) {
     throw "npm não encontrado na máquina atual."
 }
+
+Write-Host "RepoRoot:            $RepoRoot"
+Write-Host "RepoName:            $RepoName"
+Write-Host "ProjectRoot:         $ProjectRoot"
+Write-Host "RelativeSurfacePath: $RelativeSurfacePath"
+Write-Host "RuntimeIdentity:     $RuntimeIdentity"
+Write-Host ""
 
 Set-Location $ProjectRoot
 
