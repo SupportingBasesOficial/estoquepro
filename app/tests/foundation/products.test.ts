@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
 
 import type { AuditRecorder } from "../../src/server/modules/audit/audit-log.service";
-import type { Category } from "../../src/server/modules/categories/category.entity";
+import type { Category, CreateCategoryInput, UpdateCategoryInput } from "../../src/server/modules/categories/category.entity";
 import type { CategoryRepository } from "../../src/server/modules/categories/category.repository";
-import type { InternalLocation } from "../../src/server/modules/locations/location.entity";
+import type { CreateLocationInput, InternalLocation, UpdateLocationInput } from "../../src/server/modules/locations/location.entity";
 import type { LocationRepository } from "../../src/server/modules/locations/location.repository";
 import type { CreateProductInput, Product, UpdateProductInput } from "../../src/server/modules/products/product.entity";
 import type { ProductRepository } from "../../src/server/modules/products/product.repository";
 import { ProductService } from "../../src/server/modules/products/product.service";
-import type { Supplier } from "../../src/server/modules/suppliers/supplier.entity";
+import type { CreateSupplierInput, Supplier, UpdateSupplierInput } from "../../src/server/modules/suppliers/supplier.entity";
 import type { SupplierRepository } from "../../src/server/modules/suppliers/supplier.repository";
 import type { EntityStatus } from "../../src/shared/types/status";
 
@@ -23,7 +23,7 @@ class FakeAuditRecorder implements AuditRecorder {
 class FakeCategoryRepository implements CategoryRepository {
   constructor(private readonly category: Category | null = makeCategory()) {}
 
-  async create() {
+  async create(_input: CreateCategoryInput): Promise<Category> {
     throw new Error("Not used in this test");
   }
 
@@ -35,11 +35,11 @@ class FakeCategoryRepository implements CategoryRepository {
     return this.category ? [this.category] : [];
   }
 
-  async update() {
+  async update(_id: string, _input: UpdateCategoryInput): Promise<Category> {
     throw new Error("Not used in this test");
   }
 
-  async updateStatus() {
+  async updateStatus(_id: string, _status: EntityStatus): Promise<Category> {
     throw new Error("Not used in this test");
   }
 }
@@ -47,7 +47,7 @@ class FakeCategoryRepository implements CategoryRepository {
 class FakeSupplierRepository implements SupplierRepository {
   constructor(private readonly supplier: Supplier | null = makeSupplier()) {}
 
-  async create() {
+  async create(_input: CreateSupplierInput): Promise<Supplier> {
     throw new Error("Not used in this test");
   }
 
@@ -59,11 +59,11 @@ class FakeSupplierRepository implements SupplierRepository {
     return this.supplier ? [this.supplier] : [];
   }
 
-  async update() {
+  async update(_id: string, _input: UpdateSupplierInput): Promise<Supplier> {
     throw new Error("Not used in this test");
   }
 
-  async updateStatus() {
+  async updateStatus(_id: string, _status: EntityStatus): Promise<Supplier> {
     throw new Error("Not used in this test");
   }
 }
@@ -71,7 +71,7 @@ class FakeSupplierRepository implements SupplierRepository {
 class FakeLocationRepository implements LocationRepository {
   constructor(private readonly location: InternalLocation | null = makeLocation()) {}
 
-  async create() {
+  async create(_input: CreateLocationInput): Promise<InternalLocation> {
     throw new Error("Not used in this test");
   }
 
@@ -83,11 +83,11 @@ class FakeLocationRepository implements LocationRepository {
     return this.location ? [this.location] : [];
   }
 
-  async update() {
+  async update(_id: string, _input: UpdateLocationInput): Promise<InternalLocation> {
     throw new Error("Not used in this test");
   }
 
-  async updateStatus() {
+  async updateStatus(_id: string, _status: EntityStatus): Promise<InternalLocation> {
     throw new Error("Not used in this test");
   }
 }
