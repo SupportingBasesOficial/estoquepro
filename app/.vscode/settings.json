@@ -1,0 +1,12 @@
+{
+  "files.exclude": {
+    "**/.git": true,
+    "**/node_modules": true
+  },
+  "search.exclude": {
+    "**/node_modules": true
+  },
+  "terminal.integrated.cwd": "${workspaceFolder}",
+  "files.autoSave": "afterDelay",
+  "task.allowAutomaticTasks": "off"
+}

@@ -1,0 +1,23 @@
+﻿# app runtime
+app/node_modules/
+app/.next/
+app/coverage/
+app/dist/
+app/.turbo/
+
+# env
+app/.env
+app/.env.local
+app/.env.development.local
+app/.env.test.local
+app/.env.production.local
+
+# backups and local runtime artifacts
+app/_runtime_base_backup/
+app/.vercel/
+
+# OS noise
+Thumbs.db
+Desktop.ini
+
+app/*.tsbuildinfo
